@@ -16,13 +16,19 @@ class CardView(viewsets.ModelViewSet):
 	magicApiUrl = 'http://api.magicthegathering.io/v1/'
 
 	def list(self, response):
-		cards = requests.get(
+		cardsResponse = requests.get(
 			self.magicApiUrl + 'cards',
 			params = {
-				'page': self.request.GET.get('page', default=1)
+				'page': self.request.GET.get('page', default=1),
+				'name': self.request.GET.get('query', default='')
 			}
 		)
-		return Response(cards.json())
+
+		return Response({
+			'pageSize': cardsResponse.headers['Page-Size'],
+			'totalHits': cardsResponse.headers['Total-count'],
+			'cards': cardsResponse.json()['cards']
+		})
 
 	def retrieve(self, response, *args, **kwargs):
 		return Response('hello get')

@@ -34,5 +34,7 @@ export type Card = {
 }
 
 export type SearchResult = {
+	pageSize: number;
+	totalHits: number;
 	cards: Card[];
 }

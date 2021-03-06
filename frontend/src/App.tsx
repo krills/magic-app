@@ -14,7 +14,8 @@ function CardItem(card: Card) {
 export default function App(props: any) {
 
     const api = new Api();
-    const [filter, setFilter] = useState<SearchFilter>({});
+    const [searching, setSearching] = useState<boolean>(true);
+    const [currentFilter, setFilter] = useState<SearchFilter>({});
     const [searchResult, setSearchResult] = useState<SearchResult | undefined>(undefined);
 
     useEffect(() => {
@@ -22,9 +23,13 @@ export default function App(props: any) {
     }, [props]);
 
     const doSearch = () => {
-        api.get('/')
+        setSearching(true);
+        api.get('/', currentFilter)
             .then(response => response.json())
-            .then((response: SearchResult) => setSearchResult(response))
+            .then((response: SearchResult) => {
+                setSearching(false);
+                setSearchResult(response);
+            });
     }
 
 	return (
@@ -34,6 +39,25 @@ export default function App(props: any) {
 				<h1>Card explorer</h1>
 			</header>
 			<main>
+                <form onSubmit={e => {
+                    e.preventDefault();
+                    doSearch();
+                }}>
+                    <label>
+                        Card name:
+                        <input type="text" value={currentFilter.query} placeholder="Enter card name.."
+                           autoFocus={true}
+                           onChange={e => setFilter({query: e.target.value})} />
+                    </label>
+                    <input type="submit" value="Search!"/>
+                </form>
+
+                <h2>{searching
+                    ? 'Searching...'
+                    : (searchResult && searchResult.totalHits
+                        ? searchResult.totalHits + ' hit' + (searchResult.totalHits !== 1 ? 's' : '')
+                        : 'No results!')
+                }</h2>
                 <ul>
                     {searchResult && searchResult.cards.map(card => <CardItem {...card}/>)}
                 </ul>
