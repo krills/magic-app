@@ -6,7 +6,6 @@ from .serializers import CardSerializer
 from .models import Card
 import json
 import requests
-import pprint
 
 # Create your views here.
 
@@ -16,7 +15,7 @@ class CardView(viewsets.ModelViewSet):
 
 	magicApiUrl = 'http://api.magicthegathering.io/v1/'
 
-	def list(self, response, *args, **kwargs):
+	def list(self, response):
 		cards = requests.get(
 			self.magicApiUrl + 'cards',
 			params = {
