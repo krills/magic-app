@@ -11,19 +11,20 @@ export default function App(props: any) {
     const [currentFilter, setFilter] = useState<SearchFilter>({});
     const [searchResult, setSearchResult] = useState<SearchResult | undefined>(undefined);
 
+	const doSearch = () => {
+		setSearching(true);
+		api.get('/', currentFilter)
+			.then(response => response.json())
+			.then((response: SearchResult) => {
+				setSearching(false);
+				setSearchResult(response);
+			});
+	}
+
     useEffect(() => {
         doSearch();
+	// eslint-disable-next-line
     }, [props]);
-
-    const doSearch = () => {
-        setSearching(true);
-        api.get('/', currentFilter)
-            .then(response => response.json())
-            .then((response: SearchResult) => {
-                setSearching(false);
-                setSearchResult(response);
-            });
-    }
 
 	return (
 		<div className="App">
@@ -52,7 +53,7 @@ export default function App(props: any) {
                         : 'No results!')
                 }</h2>
                 <ul className={'searchResult'}>
-                    {searchResult && searchResult.cards.map(card => <CardItem {...card}/>)}
+                    {searchResult && searchResult.cards.map(card => <CardItem key={card.id} {...card}/>)}
                 </ul>
 			</main>
 		</div>

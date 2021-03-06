@@ -58,7 +58,7 @@ export default class Api {
 			options
 		);
 		call.then(response => {
-			console.log('catchall response: ',response)
+			//console.log('catchall response: ',response)
 			if (response.status === 403 && this.errorHandler) {
 				this.errorHandler(response)
 			}
