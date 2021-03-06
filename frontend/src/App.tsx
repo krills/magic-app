@@ -1,15 +1,8 @@
 import logo from './MX_Nav_EN.png';
 import {useEffect, useState} from "react";
-import {Card, SearchFilter, SearchResult} from "./Types";
+import {SearchFilter, SearchResult} from "./Types";
 import Api from "./Api";
-
-function CardItem(card: Card) {
-    return (
-        <li>
-            {card.name}
-        </li>
-    );
-}
+import CardItem from "./components/CardItem";
 
 export default function App(props: any) {
 
@@ -58,7 +51,7 @@ export default function App(props: any) {
                         ? searchResult.totalHits + ' hit' + (searchResult.totalHits !== 1 ? 's' : '')
                         : 'No results!')
                 }</h2>
-                <ul>
+                <ul className={'searchResult'}>
                     {searchResult && searchResult.cards.map(card => <CardItem {...card}/>)}
                 </ul>
 			</main>
