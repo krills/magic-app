@@ -30,9 +30,9 @@ class CardView(viewsets.ModelViewSet):
 			'cards': cardsResponse.json()['cards']
 		})
 
-	def retrieve(self, response, *args, **kwargs):
-		return Response('hello get')
+	#def retrieve(self, response, *args, **kwargs):
+	#	return Response('hello get')
 
-	@action(detail=False)
-	def custom(self, response):
-		return Response('hello custom')
+	#@action(detail=False)
+	#def custom(self, response):
+	#	return Response('hello custom')
